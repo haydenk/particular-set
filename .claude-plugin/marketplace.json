@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
+  "name": "particular-set",
+  "owner": {
+    "name": "particular-set maintainers"
+  },
+  "plugins": [
+    {
+      "name": "particular-set",
+      "source": "./",
+      "version": "0.1.0",
+      "description": "Provider-agnostic agent skill specs, exposed as Claude Code skills."
+    }
+  ]
+}

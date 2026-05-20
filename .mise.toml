@@ -1,0 +1,19 @@
+[tools]
+dagger = "0.20.8"
+go = "1.26"  # only needed when editing the .dagger module; CI builds in a container
+
+[tasks.check]
+description = "Run all skill checks via Dagger"
+run = "dagger call check --source=."
+
+[tasks.validate]
+description = "Validate SKILL.md frontmatter via Dagger"
+run = "dagger call validate --source=."
+
+[tasks.lint]
+description = "Lint Markdown via Dagger"
+run = "dagger call lint --source=."
+
+[tasks.install-hooks]
+description = "Install the local git pre-commit hook (idempotent)"
+run = "./.mise/tasks/install-hooks"

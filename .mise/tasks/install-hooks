@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+#MISE description="Install the local git pre-commit hook (idempotent)"
+set -euo pipefail
+
+repo_root="$(git rev-parse --show-toplevel 2>/dev/null || true)"
+if [[ -z "${repo_root}" ]]; then
+  echo "install-hooks: not inside a git repo — run 'git init' first" >&2
+  exit 1
+fi
+
+hooks_dir="${repo_root}/.git/hooks"
+src="${repo_root}/.githooks/pre-commit"
+dst="${hooks_dir}/pre-commit"
+
+if [[ ! -f "${src}" ]]; then
+  echo "install-hooks: ${src} is missing" >&2
+  exit 1
+fi
+
+mkdir -p "${hooks_dir}"
+
+if [[ -e "${dst}" ]]; then
+  if [[ -L "${dst}" ]] && [[ "$(readlink "${dst}")" == "${src}" || "$(readlink "${dst}")" == "../../.githooks/pre-commit" ]]; then
+    echo "install-hooks: pre-commit hook already linked"
+    exit 0
+  fi
+  echo "install-hooks: ${dst} already exists and is not our hook — leaving it alone" >&2
+  exit 0
+fi
+
+ln -s "../../.githooks/pre-commit" "${dst}"
+echo "install-hooks: linked ${dst} -> .githooks/pre-commit"

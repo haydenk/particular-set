@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# Pre-commit hook: validates staged SKILL.md files via Dagger.
+# Installed by `mise run install-hooks`.
+set -euo pipefail
+
+# Only run when SKILL.md files are staged.
+staged=$(git diff --cached --name-only --diff-filter=ACM -- 'skills/**/SKILL.md' || true)
+if [[ -z "${staged}" ]]; then
+  exit 0
+fi
+
+if ! command -v dagger >/dev/null 2>&1; then
+  echo "pre-commit: dagger not found on PATH — install it (e.g. 'mise install') and retry" >&2
+  exit 1
+fi
+
+echo "pre-commit: validating staged SKILL.md files via Dagger"
+dagger call validate --source=. >/dev/null

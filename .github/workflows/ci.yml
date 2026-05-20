@@ -1,0 +1,17 @@
+name: ci
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dagger/dagger-for-github@v7
+        with:
+          version: "0.20.8"
+          verb: call
+          args: check --source=.
