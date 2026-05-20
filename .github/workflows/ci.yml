@@ -5,12 +5,18 @@ on:
     branches: [master]
   pull_request:
 
+# Third-party actions are pinned to a full commit SHA (40 chars). The
+# trailing comment carries the human-readable tag. To bump: find the new
+# release on the action's GitHub page, then run
+#   gh api repos/<owner>/<repo>/git/refs/tags/<tag> --jq .object.sha
+# and replace both the SHA and the version comment.
+
 jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: dagger/dagger-for-github@v7
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
+      - uses: dagger/dagger-for-github@27b130bf0f79a7f6fbbbe0fbca6760dc9bb40a77  # v8.4.1
         with:
           version: "0.20.8"
           verb: call
