@@ -1,5 +1,11 @@
 blank_issues_enabled: false
 contact_links:
+  - name: Question or open-ended discussion
+    url: https://github.com/haydenk/particular-set/discussions
+    about: Not sure if it's a bug or proposal? Start a discussion — Q&A, Ideas, or Skill design.
+  - name: Loose skill idea (not ready for a full proposal)
+    url: https://github.com/haydenk/particular-set/discussions/categories/ideas
+    about: Pitch a skill before writing the full new-skill issue. Use the issue template once the idea is concrete.
   - name: Security report
     url: https://github.com/haydenk/particular-set/security/advisories/new
     about: Use GitHub's private security advisory flow for vulnerabilities. See SECURITY.md.
