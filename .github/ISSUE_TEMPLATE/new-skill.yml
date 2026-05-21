@@ -1,0 +1,65 @@
+name: New skill proposal
+description: Propose adding a brand-new skill to this repository.
+title: "skill: "
+labels:
+  - "type: new-skill"
+  - "area: skills"
+  - "status: needs-triage"
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this template to pitch a new skill before writing the
+        full SKILL.md. Lightweight proposals are encouraged — we'd
+        rather discuss scope early than re-scope a PR later.
+
+  - type: input
+    id: slug
+    attributes:
+      label: Proposed slug
+      description: Kebab-case directory name under skills/.
+      placeholder: e.g. write-conventional-commit
+    validations:
+      required: true
+
+  - type: textarea
+    id: trigger
+    attributes:
+      label: Trigger description (one line)
+      description: |
+        The line an agent would read to decide whether to invoke this
+        skill. Lead with concrete triggers ("Use when …").
+      placeholder: Use when the user asks to …
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve?
+      description: Who needs this skill and what are they trying to do?
+    validations:
+      required: true
+
+  - type: textarea
+    id: outline
+    attributes:
+      label: Rough outline of the skill body
+      description: Bullet points are fine. What steps will the agent follow?
+    validations:
+      required: true
+
+  - type: textarea
+    id: runtimes
+    attributes:
+      label: Runtime considerations
+      description: |
+        Any runtime-specific notes (tools required, network access,
+        binaries the skill assumes)? Specs are provider-agnostic, but
+        flagging requirements early helps reviewers.
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Existing skills, prompting patterns, or external tools you ruled out.

@@ -1,0 +1,30 @@
+version: 2
+
+updates:
+  # Keep pinned GitHub Actions up to date.
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    labels:
+      - "area: ci"
+      - "area: deps"
+      - "type: chore"
+    commit-message:
+      prefix: ci
+      include: scope
+
+  # Keep the Dagger Go module's deps current.
+  - package-ecosystem: gomod
+    directory: /.dagger
+    schedule:
+      interval: weekly
+      day: monday
+    labels:
+      - "area: dagger"
+      - "area: deps"
+      - "type: chore"
+    commit-message:
+      prefix: deps
+      include: scope

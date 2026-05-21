@@ -1,0 +1,45 @@
+name: Tooling / CI issue
+description: A problem with the Dagger module, CI workflows, or local dev tooling.
+title: "tooling: "
+labels:
+  - bug
+  - "area: tooling"
+  - "status: needs-triage"
+body:
+  - type: dropdown
+    id: surface
+    attributes:
+      label: Which surface?
+      options:
+        - Dagger module (.dagger/)
+        - GitHub Actions workflows
+        - mise tasks
+        - Pre-commit hook
+        - markdownlint config
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+    validations:
+      required: true
+
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+      render: shell
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: |
+        OS, `dagger version`, `mise version`, and anything else worth
+        noting. CI logs link is also great.
+      render: shell

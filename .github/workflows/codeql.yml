@@ -1,0 +1,54 @@
+name: codeql
+
+# Static analysis via CodeQL. Two languages are scanned:
+#   - go      → the Dagger module under .dagger/
+#   - actions → the workflow files themselves under .github/workflows/
+#
+# Markdown skill specs are not in scope (no code). Findings are uploaded
+# to the repo's Security → Code scanning tab.
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+  schedule:
+    # Weekly Monday rerun catches new queries that ship with CodeQL even
+    # if no code has changed in the repo.
+    - cron: "23 7 * * 1"
+  workflow_dispatch:
+
+# Default token is read-only at the repo level; individual jobs elevate.
+permissions:
+  contents: read
+
+jobs:
+  analyze:
+    name: analyze (${{ matrix.language }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      security-events: write
+      actions: read
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - language: go
+            build-mode: none
+          - language: actions
+            build-mode: none
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
+
+      - name: Initialise CodeQL
+        uses: github/codeql-action/init@9e0d7b8d25671d64c341c19c0152d693099fb5ba  # v4.35.5
+        with:
+          languages: ${{ matrix.language }}
+          build-mode: ${{ matrix.build-mode }}
+
+      - name: Analyse
+        uses: github/codeql-action/analyze@9e0d7b8d25671d64c341c19c0152d693099fb5ba  # v4.35.5
+        with:
+          category: "/language:${{ matrix.language }}"

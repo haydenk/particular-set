@@ -1,0 +1,45 @@
+# Path-based PR labels. Consumed by actions/labeler in
+# .github/workflows/labeler.yml. Format reference:
+# https://github.com/actions/labeler#configuration
+
+"area: skills":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "skills/**"
+
+"area: docs":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "docs/**"
+          - "README.md"
+          - "AGENT.md"
+          - "CLAUDE.md"
+          - "SECURITY.md"
+          - "CODE_OF_CONDUCT.md"
+
+"area: plugin":
+  - changed-files:
+      - any-glob-to-any-file:
+          - ".claude-plugin/**"
+
+"area: dagger":
+  - changed-files:
+      - any-glob-to-any-file:
+          - ".dagger/**"
+          - "dagger.json"
+
+"area: tooling":
+  - changed-files:
+      - any-glob-to-any-file:
+          - ".mise/**"
+          - ".mise.toml"
+          - ".githooks/**"
+          - ".markdownlint-cli2.jsonc"
+          - ".editorconfig"
+          - ".gitattributes"
+          - ".gitignore"
+
+"area: ci":
+  - changed-files:
+      - any-glob-to-any-file:
+          - ".github/**"

@@ -1,0 +1,42 @@
+name: Skill update
+description: Improve or correct an existing skill.
+title: "skill: "
+labels:
+  - "type: skill-update"
+  - "area: skills"
+  - "status: needs-triage"
+body:
+  - type: input
+    id: slug
+    attributes:
+      label: Which skill?
+      description: Directory under skills/.
+      placeholder: e.g. example-skill
+    validations:
+      required: true
+
+  - type: textarea
+    id: change
+    attributes:
+      label: What should change?
+      description: Concrete description of the update.
+    validations:
+      required: true
+
+  - type: textarea
+    id: rationale
+    attributes:
+      label: Why?
+      description: |
+        What's currently wrong, misleading, or missing? If the skill is
+        producing bad agent behaviour, include a transcript or example.
+    validations:
+      required: true
+
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope check
+      description: |
+        Does this stay in the existing skill, or does it suggest a new
+        sibling skill? It's fine if you're not sure — flag it here.

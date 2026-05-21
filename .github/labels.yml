@@ -1,0 +1,72 @@
+# Canonical label manifest for particular-set.
+#
+# Three families:
+#   area: <where the change lives>
+#   type: <what kind of change it is>
+#   status: <current workflow state>
+#
+# This file is the source of truth. The `labels-sync` workflow applies it
+# to the remote repo whenever it changes on master. Default GitHub labels
+# (bug, enhancement, documentation, etc.) are left in place and reused.
+
+# ---- area: where the change lives ---------------------------------------
+
+- name: "area: skills"
+  color: "0e8a16"
+  description: "Touches skills/"
+
+- name: "area: docs"
+  color: "1d76db"
+  description: "Touches docs/, README, AGENT.md, or top-level prose"
+
+- name: "area: plugin"
+  color: "fbca04"
+  description: "Touches the Claude Code plugin manifest"
+
+- name: "area: dagger"
+  color: "0c4a6e"
+  description: "Touches the Dagger module under .dagger/"
+
+- name: "area: tooling"
+  color: "5319e7"
+  description: "Touches mise, githooks, lint config, or other dev tooling"
+
+- name: "area: ci"
+  color: "006b75"
+  description: "Touches .github/ workflows or config"
+
+- name: "area: deps"
+  color: "cccccc"
+  description: "Dependency bump"
+
+# ---- type: what kind of change it is ------------------------------------
+
+- name: "type: new-skill"
+  color: "c2e0c6"
+  description: "Proposes or adds a brand-new skill"
+
+- name: "type: skill-update"
+  color: "c5def5"
+  description: "Changes the contents of an existing skill"
+
+- name: "type: chore"
+  color: "ededed"
+  description: "Routine maintenance, no behaviour change"
+
+- name: "type: security"
+  color: "b60205"
+  description: "Security-relevant fix or hardening"
+
+# ---- status: current workflow state -------------------------------------
+
+- name: "status: needs-triage"
+  color: "fbca04"
+  description: "New, not yet reviewed by a maintainer"
+
+- name: "status: needs-info"
+  color: "d93f0b"
+  description: "Waiting on more detail from the reporter"
+
+- name: "status: blocked"
+  color: "b60205"
+  description: "Blocked on an external dependency or upstream change"
