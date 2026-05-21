@@ -72,6 +72,7 @@ Bad:
 
 ## Validation
 
-`npm run validate` parses every `SKILL.md`, checks the rules above, and
-fails the build on any violation. Pre-commit runs the same script on
-staged files.
+`mise run validate` (or `dagger call validate --source=.`) parses
+every `SKILL.md`, checks the rules above, and fails the build on any
+violation. Pre-commit runs the same check on staged files; CI runs
+`mise run check` on every PR.

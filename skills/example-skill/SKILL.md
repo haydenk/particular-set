@@ -21,7 +21,7 @@ repo and need a known-good starting point."
 2. Edit `SKILL.md` frontmatter — set `name` to `<new-slug>` and rewrite
    the `description` to lead with concrete triggers.
 3. Replace the body with the actual instructions for the new skill.
-4. Run `npm run validate` to confirm the frontmatter passes.
+4. Run `mise run validate` to confirm the frontmatter passes.
 5. Open a PR.
 
 ## See also
