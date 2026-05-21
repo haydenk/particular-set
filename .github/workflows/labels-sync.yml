@@ -12,7 +12,11 @@ on:
       - .github/workflows/labels-sync.yml
   workflow_dispatch:
 
+# Explicit permissions block: every scope not listed defaults to `none`.
+# `contents: read` is required for actions/checkout to read the repo;
+# `issues: write` is the scope GitHub uses for label CRUD.
 permissions:
+  contents: read
   issues: write
 
 jobs:
