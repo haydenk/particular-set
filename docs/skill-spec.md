@@ -12,6 +12,8 @@ skills/<slug>/
   references/         optional — long-form docs the skill links to
   scripts/            optional — helper scripts the skill may invoke
   assets/             optional — static files (templates, fixtures)
+  agents/             optional — runtime-specific hints (e.g. Codex reads
+                      agents/openai.yaml for UI metadata); never required
 ```
 
 `<slug>` is kebab-case and must equal the `name:` field in

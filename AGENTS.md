@@ -1,8 +1,9 @@
 # particular-set
 
 A repository of provider-agnostic agent skill specs. Also packaged as a
-Claude Code plugin so it can be installed there directly, but the specs
-themselves are not tied to any particular runtime.
+plugin for Claude Code and Codex so it can be installed in either
+directly, but the specs themselves are not tied to any particular
+runtime.
 
 This file (`AGENTS.md`) is the canonical instruction document for any
 coding agent working in this repo. Claude Code, Codex, Cursor, and
@@ -19,6 +20,10 @@ organisation's systems, conventions, or data, it is out of scope.
 ## Stack
 
 - Markdown skill specs under `skills/<slug>/SKILL.md`
+- Plugin wrappers: `.claude-plugin/marketplace.json` (Claude Code),
+  `.codex-plugin/plugin.json` + `.agents/plugins/marketplace.json`
+  (Codex). `.agents/skills` is a symlink to `skills/` so Codex picks
+  up skills when run inside this repo.
 - Dagger Go module under `.dagger/` runs every check in containers
 - mise pins `dagger` (and `go`, for editing the module)
 - GitHub Actions for CI — calls Dagger
@@ -31,6 +36,7 @@ Tasks are wired through mise so the same command works locally and in CI.
 - `mise install` — install Dagger and Go to versions pinned in `mise.toml`
 - `mise run check` — run validate + lint via Dagger
 - `mise run validate` — frontmatter validation only
+- `mise run manifests` — plugin manifest consistency only
 - `mise run lint` — Markdown lint only
 - `mise run install-hooks` — install `.git/hooks/pre-commit` (idempotent)
 
@@ -38,6 +44,7 @@ Direct equivalents if you prefer:
 
 - `dagger call check --source=.`
 - `dagger call validate --source=.`
+- `dagger call manifests --source=.`
 - `dagger call lint --source=.`
 
 ## Editing the Dagger module
@@ -61,8 +68,11 @@ updates happen with normal `go get` / `go mod tidy`.
 
 ## Do not touch without approval
 
-- `.claude-plugin/marketplace.json` — changes here affect every consumer
-  who has installed the plugin. Bump versions deliberately.
+- `.claude-plugin/marketplace.json`, `.codex-plugin/plugin.json`,
+  `.agents/plugins/marketplace.json` — changes here affect every consumer
+  who has installed the plugin. Bump versions deliberately, and bump the
+  Claude and Codex versions together; `mise run check` fails if they
+  differ.
 - `.github/workflows/` — CI config. Local edits often hide real issues.
 - `dagger.json` — engine version is pinned to match the mise-installed
   CLI. Bump both together.

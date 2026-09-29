@@ -1,11 +1,13 @@
 #!/usr/bin/env bash
-# Pre-commit hook: validates staged SKILL.md files via Dagger.
-# Installed by `mise run install-hooks`.
+# Pre-commit hook: validates staged SKILL.md files and plugin manifests
+# via Dagger. Installed by `mise run install-hooks`.
 set -euo pipefail
 
-# Only run when SKILL.md files are staged.
-staged=$(git diff --cached --name-only --diff-filter=ACM -- 'skills/**/SKILL.md' || true)
-if [[ -z "${staged}" ]]; then
+# Only run when SKILL.md files or plugin manifests are staged.
+staged_skills=$(git diff --cached --name-only --diff-filter=ACM -- 'skills/**/SKILL.md' || true)
+staged_manifests=$(git diff --cached --name-only --diff-filter=ACM -- \
+  '.claude-plugin/marketplace.json' '.codex-plugin/plugin.json' '.agents/plugins/marketplace.json' || true)
+if [[ -z "${staged_skills}" && -z "${staged_manifests}" ]]; then
   exit 0
 fi
 
@@ -14,5 +16,12 @@ if ! command -v dagger >/dev/null 2>&1; then
   exit 1
 fi
 
-echo "pre-commit: validating staged SKILL.md files via Dagger"
-dagger call validate --source=. >/dev/null
+if [[ -n "${staged_skills}" ]]; then
+  echo "pre-commit: validating staged SKILL.md files via Dagger"
+  dagger call validate --source=. >/dev/null
+fi
+
+if [[ -n "${staged_manifests}" ]]; then
+  echo "pre-commit: checking plugin manifests via Dagger"
+  dagger call manifests --source=. >/dev/null
+fi

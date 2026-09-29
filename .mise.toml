@@ -10,6 +10,10 @@ run = "dagger call check --source=."
 description = "Validate SKILL.md frontmatter via Dagger"
 run = "dagger call validate --source=."
 
+[tasks.manifests]
+description = "Check the Claude Code and Codex plugin manifests agree via Dagger"
+run = "dagger call manifests --source=."
+
 [tasks.lint]
 description = "Lint Markdown via Dagger"
 run = "dagger call lint --source=."

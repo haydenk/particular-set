@@ -1,0 +1,28 @@
+{
+  "name": "particular-set",
+  "version": "0.1.0",
+  "description": "Provider-agnostic agent skill specs, exposed as Codex skills.",
+  "author": {
+    "name": "particular-set maintainers",
+    "url": "https://github.com/haydenk/particular-set"
+  },
+  "homepage": "https://github.com/haydenk/particular-set",
+  "repository": "https://github.com/haydenk/particular-set",
+  "license": "AGPL-3.0",
+  "keywords": [
+    "agent-skills",
+    "skills",
+    "developer-tools",
+    "coding-agents"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Particular Set",
+    "shortDescription": "General-purpose developer skills for any coding agent",
+    "longDescription": "A curated set of provider-agnostic SKILL.md specs covering everyday software engineering tasks. The same skill directories are installable in Claude Code, Codex, and any runtime that implements the Agent Skills format.",
+    "developerName": "particular-set maintainers",
+    "category": "Developer Tools",
+    "capabilities": ["Read"],
+    "websiteURL": "https://github.com/haydenk/particular-set"
+  }
+}

@@ -20,6 +20,8 @@
   - changed-files:
       - any-glob-to-any-file:
           - ".claude-plugin/**"
+          - ".codex-plugin/**"
+          - ".agents/**"
 
 "area: dagger":
   - changed-files:

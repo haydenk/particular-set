@@ -5,6 +5,7 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"path"
 	"regexp"
@@ -24,11 +25,15 @@ func (m *ParticularSet) Check(ctx context.Context, source *dagger.Directory) (st
 	if err != nil {
 		return v, err
 	}
+	p, err := m.Manifests(ctx, source)
+	if err != nil {
+		return v + "\n" + p, err
+	}
 	l, err := m.Lint(ctx, source)
 	if err != nil {
-		return v + "\n" + l, err
+		return v + "\n" + p + "\n" + l, err
 	}
-	return v + "\n" + l, nil
+	return v + "\n" + p + "\n" + l, nil
 }
 
 // Validate parses every skills/<slug>/SKILL.md and verifies its frontmatter
@@ -138,4 +143,118 @@ func validateSkill(file, contents string) []string {
 	}
 
 	return errs
+}
+
+// Plugin manifest paths. The repo root is the plugin root for every
+// runtime, so each wrapper points its source at "./".
+const (
+	claudeMarketplacePath = ".claude-plugin/marketplace.json"
+	codexPluginPath       = ".codex-plugin/plugin.json"
+	codexMarketplacePath  = ".agents/plugins/marketplace.json"
+)
+
+type claudeMarketplace struct {
+	Name    string `json:"name"`
+	Plugins []struct {
+		Name        string `json:"name"`
+		Source      string `json:"source"`
+		Version     string `json:"version"`
+		Description string `json:"description"`
+	} `json:"plugins"`
+}
+
+type codexPlugin struct {
+	Name        string `json:"name"`
+	Version     string `json:"version"`
+	Description string `json:"description"`
+	Skills      string `json:"skills"`
+}
+
+type codexMarketplace struct {
+	Name    string `json:"name"`
+	Plugins []struct {
+		Name   string `json:"name"`
+		Source struct {
+			Source string `json:"source"`
+			Path   string `json:"path"`
+		} `json:"source"`
+	} `json:"plugins"`
+}
+
+// Manifests parses the Claude Code and Codex plugin manifests and checks
+// they describe the same plugin: same name, same version, both rooted at
+// the repo root, and the Codex manifest pointing at skills/.
+func (m *ParticularSet) Manifests(ctx context.Context, source *dagger.Directory) (string, error) {
+	var out strings.Builder
+	var errs []string
+
+	readJSON := func(p string, v any) bool {
+		contents, err := source.File(p).Contents(ctx)
+		if err != nil {
+			errs = append(errs, fmt.Sprintf("%s: %v", p, err))
+			return false
+		}
+		if err := json.Unmarshal([]byte(contents), v); err != nil {
+			errs = append(errs, fmt.Sprintf("%s: invalid JSON: %v", p, err))
+			return false
+		}
+		fmt.Fprintf(&out, "ok   %s\n", p)
+		return true
+	}
+
+	var cm claudeMarketplace
+	var cp codexPlugin
+	var xm codexMarketplace
+	okClaude := readJSON(claudeMarketplacePath, &cm)
+	okCodex := readJSON(codexPluginPath, &cp)
+	okCodexMkt := readJSON(codexMarketplacePath, &xm)
+
+	if okClaude {
+		switch {
+		case len(cm.Plugins) != 1:
+			errs = append(errs, fmt.Sprintf("%s: expected exactly 1 plugin entry, got %d", claudeMarketplacePath, len(cm.Plugins)))
+		case cm.Plugins[0].Source != "./":
+			errs = append(errs, fmt.Sprintf("%s: plugin source must be \"./\", got %q", claudeMarketplacePath, cm.Plugins[0].Source))
+		}
+	}
+
+	if okCodex {
+		if cp.Name == "" || cp.Version == "" || cp.Description == "" {
+			errs = append(errs, fmt.Sprintf("%s: name, version and description are required", codexPluginPath))
+		}
+		if cp.Skills != "./skills/" && cp.Skills != "./skills" {
+			errs = append(errs, fmt.Sprintf("%s: skills must point at \"./skills/\", got %q", codexPluginPath, cp.Skills))
+		}
+	}
+
+	if okCodexMkt {
+		switch {
+		case len(xm.Plugins) != 1:
+			errs = append(errs, fmt.Sprintf("%s: expected exactly 1 plugin entry, got %d", codexMarketplacePath, len(xm.Plugins)))
+		case xm.Plugins[0].Source.Source != "local" || xm.Plugins[0].Source.Path != "./":
+			errs = append(errs, fmt.Sprintf("%s: plugin source must be local at \"./\", got %s %q", codexMarketplacePath, xm.Plugins[0].Source.Source, xm.Plugins[0].Source.Path))
+		}
+	}
+
+	if okClaude && okCodex && len(cm.Plugins) == 1 {
+		if cm.Plugins[0].Name != cp.Name {
+			errs = append(errs, fmt.Sprintf("plugin name differs: Claude %q vs Codex %q", cm.Plugins[0].Name, cp.Name))
+		}
+		if cm.Plugins[0].Version != cp.Version {
+			errs = append(errs, fmt.Sprintf("plugin version differs: Claude %q vs Codex %q — bump both together", cm.Plugins[0].Version, cp.Version))
+		}
+	}
+	if okCodex && okCodexMkt && len(xm.Plugins) == 1 && xm.Plugins[0].Name != cp.Name {
+		errs = append(errs, fmt.Sprintf("plugin name differs: %s %q vs %s %q", codexMarketplacePath, xm.Plugins[0].Name, codexPluginPath, cp.Name))
+	}
+
+	if len(errs) > 0 {
+		fmt.Fprintf(&out, "FAIL plugin manifests\n")
+		for _, e := range errs {
+			fmt.Fprintf(&out, "     - %s\n", e)
+		}
+		return out.String(), fmt.Errorf("plugin manifests failed validation")
+	}
+	fmt.Fprintf(&out, "\n3 manifest(s) checked, plugin %s v%s\n", cp.Name, cp.Version)
+	return out.String(), nil
 }

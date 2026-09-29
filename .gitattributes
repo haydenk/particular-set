@@ -46,8 +46,9 @@
 # Excluded from `git archive` (GitHub source-code zip/tarball)
 # ---------------------------------------------------------------------
 #
-# Keep: README.md, AGENT.md, CLAUDE.md, LICENSE, SECURITY.md,
-# CODE_OF_CONDUCT.md, docs/, skills/, .claude-plugin/.
+# Keep: README.md, AGENTS.md, LICENSE, SECURITY.md, CODE_OF_CONDUCT.md,
+# docs/, skills/, and the plugin wrappers (.claude-plugin/,
+# .codex-plugin/, .agents/).
 
 # Directories: match the dir itself and every path beneath it.
 .claude/**                 export-ignore
