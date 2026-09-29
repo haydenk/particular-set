@@ -17,7 +17,7 @@
 
 - name: "area: docs"
   color: "1d76db"
-  description: "Touches docs/, README, AGENT.md, or top-level prose"
+  description: "Touches docs/, README, AGENTS.md, or top-level prose"
 
 - name: "area: plugin"
   color: "fbca04"

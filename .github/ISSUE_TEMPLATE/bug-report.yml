@@ -53,7 +53,7 @@ body:
       multiple: true
       options:
         - A specific skill (skills/*)
-        - Docs (docs/, README, AGENT.md)
+        - Docs (docs/, README, AGENTS.md)
         - Dagger module (.dagger/)
         - CI / GitHub Actions
         - Plugin manifest (.claude-plugin/)

@@ -1,5 +1,5 @@
 [tools]
-dagger = "0.20.8"
+dagger = "0.21.9"
 go = "1.26"  # only needed when editing the .dagger module; CI builds in a container
 
 [tasks.check]

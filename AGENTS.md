@@ -4,9 +4,17 @@ A repository of provider-agnostic agent skill specs. Also packaged as a
 Claude Code plugin so it can be installed there directly, but the specs
 themselves are not tied to any particular runtime.
 
-This file (`AGENT.md`) is the canonical instruction document for any
-coding agent working in this repo. `CLAUDE.md` is a symlink to it so
-Claude Code picks it up automatically.
+This file (`AGENTS.md`) is the canonical instruction document for any
+coding agent working in this repo. Claude Code, Codex, Cursor, and
+Copilot all read it natively; there is no `CLAUDE.md`.
+
+## Scope
+
+This repo holds general-purpose developer skills, agents, and related
+specs: things any engineer on any codebase could use. Anything specific
+to a company, client, team, or single project belongs in its own repo,
+not here. If a skill only makes sense with knowledge of one
+organisation's systems, conventions, or data, it is out of scope.
 
 ## Stack
 

@@ -12,8 +12,7 @@
       - any-glob-to-any-file:
           - "docs/**"
           - "README.md"
-          - "AGENT.md"
-          - "CLAUDE.md"
+          - "AGENTS.md"
           - "SECURITY.md"
           - "CODE_OF_CONDUCT.md"
 

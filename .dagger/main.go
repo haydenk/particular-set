@@ -85,7 +85,7 @@ func (m *ParticularSet) Lint(ctx context.Context, source *dagger.Directory) (str
 			"skills/**/*.md",
 			"docs/**/*.md",
 			"README.md",
-			"AGENT.md",
+			"AGENTS.md",
 			"SECURITY.md",
 			"CODE_OF_CONDUCT.md",
 		}).

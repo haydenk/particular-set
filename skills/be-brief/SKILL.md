@@ -1,6 +1,6 @@
 ---
 name: be-brief
-description: Use when the user signals they want shorter responses ("be brief", "less tokens", "stop yapping", "tldr", "shorter"), when AGENT.md/CLAUDE.md instructs concise replies, or when about to write a multi-paragraph response to a one-line question. Trims filler while preserving technical accuracy.
+description: Use when the user signals they want shorter responses ("be brief", "less tokens", "stop yapping", "tldr", "shorter"), when AGENTS.md/CLAUDE.md instructs concise replies, or when about to write a multi-paragraph response to a one-line question. Trims filler while preserving technical accuracy.
 ---
 
 # be-brief
