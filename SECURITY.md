@@ -2,14 +2,19 @@
 
 ## Supported versions
 
-This repository tracks `main`. Security fixes land on `main` and are
+This repository tracks `master`. Security fixes land on `master` and are
 picked up by anyone who has installed the plugin or vendored the skill
 specs. There are no long-lived release branches.
 
 ## Reporting a vulnerability
 
 Please do not file public GitHub issues for security reports. Instead,
-send a private report to <security@example.invalid>.<!-- TODO: replace with real contact -->
+use GitHub's private vulnerability reporting form:
+
+<https://github.com/haydenk/particular-set/security/advisories/new>
+
+Reports go straight to the maintainers and stay private until a fix is
+published.
 
 Include:
 
@@ -50,7 +55,7 @@ If you are installing skills from this repo into an agent runtime:
 
 - Review each `SKILL.md` body before granting the runtime broad tool
   access. Skills can include instructions that an agent will follow.
-- Pin to a commit or tag rather than tracking `main` if you need a
+- Pin to a commit or tag rather than tracking `master` if you need a
   stable, reviewed surface.
 - Treat `allowed-tools` as a hint, not a sandbox — your runtime is the
   authority on what a skill can actually call.
